@@ -1,0 +1,120 @@
+﻿<Window x:Class="View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        MinHeight="500"
+        ResizeMode="CanResizeWithGrip"
+        SnapsToDevicePixels="True"
+        Title="Инвентаризация"
+        MinWidth="667"
+        WindowState="Maximized"
+        ui:WindowHelper.UseModernWindowStyle="True">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Экспортировать данные в CVS"
+                          Click="MenuItem_Click" />
+            </MenuItem>
+            <MenuItem Header="Добавить">
+                <MenuItem Header="Тип объекта"
+                          Command="{Binding InsertObjectTypeCommand}" />
+                <MenuItem Header="Помещение"
+                          Command="{Binding InsertPlaceCommand}" />
+                <MenuItem Header="Объект"
+                          Command="{Binding InsertObjectCommand}" />
+                <MenuItem Header="Иммущество"
+                          Command="{Binding InsertPropertyCommand}" />
+                <MenuItem Header="Пользователя"
+                          Command="{Binding InsertUserCommand}" />
+            </MenuItem>
+            <MenuItem Header="Справка" />
+        </Menu>
+
+        <StackPanel Grid.Row="1"
+                    Margin="15, 15"
+                    Orientation="Horizontal">
+
+            <ComboBox Margin="0,0,20,0"
+                      MinWidth="170"
+                      ItemsSource="{Binding Places}"
+                      SelectedItem="{Binding SelectedPlace, Mode=OneWayToSource}"
+                      SelectedValue="PlaceId"
+                      DisplayMemberPath="PlaceName"
+                      SelectedIndex="0">
+            </ComboBox>
+
+            <ComboBox Margin="0,0,20,0"
+                      MinWidth="170"
+                      ItemsSource="{Binding ObjectTypes}"
+                      SelectedItem="{Binding SelectedObjectType, Mode=OneWayToSource}"
+                      SelectedValue="ObjectTypeId"
+                      DisplayMemberPath="ObjectTypeName"
+                      SelectedIndex="0" />
+
+            <ComboBox Margin="0,0,20,0"
+                      MinWidth="170"
+                      ItemsSource="{Binding IsInStock}"
+                      SelectedItem="{Binding SelectedInStock, Mode=OneWayToSource}"
+                      SelectedValue="SearchInStock"
+                      DisplayMemberPath="InStockName"
+                      SelectedIndex="0" />
+
+            <TextBox Margin="0,0,20,0"
+                     MinWidth="170"
+                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="Найти"
+                    Command="{Binding SearchCommand}" />
+            <TextBox Visibility="Collapsed"
+                     x:Name="fileNameTextBox"
+                     Text="{Binding FileName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <DataGrid Grid.Row="2"
+                  ItemsSource="{Binding Properties}"
+                  SelectedItem="{Binding SelectedProperty, Mode=OneWayToSource}"
+                  AutoGenerateColumns="false">
+            <!--CommandParameter="{Binding SelectedPhone}" />-->
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Помещение"
+                                    Binding="{Binding Place}"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="Тип объекта"
+                                    Binding="{Binding ObjectType}"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="Описание"
+                                    Binding="{Binding Description}"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="Инвентарный номер"
+                                    Binding="{Binding InventoryNumber}"
+                                    IsReadOnly="True"/>
+                <DataGridCheckBoxColumn Header="В наличии"
+                                        Binding="{Binding IsInStock}"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Снять с учёта"
+                              Command="{Binding DeletePropertyCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="CellEditEnding">
+                    <i:InvokeCommandAction Command="{Binding EditCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </DataGrid>
+    </Grid>
+</Window>
