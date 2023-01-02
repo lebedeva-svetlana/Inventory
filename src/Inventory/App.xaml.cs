@@ -36,12 +36,6 @@ namespace Inventory
             {
                 CreateUserViewModel createUserViewModel = new();
                 await ViewInteraction.ShowModalPresentation(createUserViewModel);
-                if (createUserViewModel.IsAcepted)
-                {
-                    MainViewModel mainViewModel = new();
-                    ViewInteraction.ShowPresentation(mainViewModel);
-                    ViewInteraction.HidePresentation(createUserViewModel);
-                }
             }
             else
             {

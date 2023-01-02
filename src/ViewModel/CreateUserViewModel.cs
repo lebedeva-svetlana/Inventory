@@ -143,7 +143,12 @@ namespace ViewModel
 
             IsAcepted = true;
 
+            if (!Usernames.Any())
+            {
+                ViewInteraction.ShowPresentation(new MainViewModel());
+            }
 
+            
         }
     }
 }

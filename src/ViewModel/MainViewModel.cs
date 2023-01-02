@@ -184,8 +184,6 @@ namespace ViewModel
             CreateUserViewModel createUserViewModel = new();
 
             await ViewInteraction.ShowModalPresentation(createUserViewModel);
-
-           
         }
 
         private async Task InsertObject()
